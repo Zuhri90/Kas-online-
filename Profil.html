@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Profil Pengguna</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f9f9f9;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 400px;
+            margin: 0 auto;
+            background-color: #fff;
+            padding: 2rem;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+
+        h2 {
+            text-align: center;
+            margin-bottom: 1.5rem;
+        }
+
+        .profile-info {
+            margin-bottom: 1rem;
+        }
+
+        .profile-info strong {
+            display: block;
+            margin-bottom: 0.5rem;
+        }
+
+        .edit-btn {
+            display: block;
+            width: 100%;
+            padding: 0.8rem;
+            background-color: #007BFF;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            text-align: center;
+        }
+
+        .edit-btn:hover {
+            background-color: #0056b3;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h2>Profil Pengguna</h2>
+        <div class="profile-info">
+            <strong>Nama Pengguna:</strong>
+            <p id="username"></p>
+
+            <strong>Email:</strong>
+            <p id="email"></p>
+
+            <strong>Nomor Telepon:</strong>
+            <p id="phone"></p>
+
+            <strong>Alamat:</strong>
+            <p id="address"></p>
+        </div>
+
+        <button class="edit-btn" onclick="window.location.href='edit-profil.html'">Edit Profil</button>
+    </div>
+
+    <script>
+        // Retrieve user data from localStorage
+        const username = localStorage.getItem('username');
+        const email = localStorage.getItem('email');
+        const phone = localStorage.getItem('phone');
+        const address = localStorage.getItem('address');
+
+        // Display user data on the page
+        document.getElementById('username').textContent = username;
+        document.getElementById('email').textContent = email;
+        document.getElementById('phone').textContent = phone;
+        document.getElementById('address').textContent = address;
+    </script>
+</body>
+</html>

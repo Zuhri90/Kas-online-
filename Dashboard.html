@@ -1,0 +1,251 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard - Catatan Kas</title>
+    <style>
+        /* Reset & Global Styling */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f9f9f9;
+            color: #333;
+        }
+        a {
+            text-decoration: none;
+            color: inherit;
+        }
+
+        /* Navbar */
+        .navbar {
+            background-color: #007BFF;
+            padding: 1rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            color: white;
+        }
+
+        .navbar a {
+            color: white;
+            margin-left: 1rem;
+        }
+
+        /* Main Content */
+        .container {
+            padding: 2rem;
+        }
+        .header {
+            text-align: center;
+            margin-bottom: 2rem;
+        }
+
+        /* Table */
+        .table-container {
+            overflow-x: auto;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-bottom: 2rem;
+        }
+        table th, table td {
+            padding: 0.8rem;
+            text-align: left;
+            border: 1px solid #ddd;
+        }
+        table th {
+            background-color: #f0f0f0;
+        }
+
+        /* Buttons */
+        .btn {
+            display: inline-block;
+            padding: 0.6rem 1.2rem;
+            background-color: #007BFF;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+        .btn:hover {
+            background-color: #0056b3;
+        }
+
+        .add-product-btn {
+            background-color: #28a745;
+            margin-right: 1rem;
+        }
+
+        /* Add Product Form */
+        .form-container {
+            display: none;
+            margin-top: 2rem;
+            padding: 1.5rem;
+            background-color: #fff;
+            border-radius: 8px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+        .form-container input, .form-container select {
+            width: 100%;
+            padding: 0.8rem;
+            margin-bottom: 1rem;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+        }
+
+        /* Footer */
+        .footer {
+            background-color: #333;
+            color: white;
+            text-align: center;
+            padding: 1rem;
+            margin-top: 2rem;
+        }
+
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            .navbar {
+                flex-wrap: wrap;
+            }
+            .table-container {
+                font-size: 0.9rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Navbar -->
+    <nav class="navbar">
+        <div class="logo">Catatan Kas</div>
+        <div class="menu">
+            <a href="Profil.html">Profil</a>
+        </div>
+    </nav>
+
+    <!-- Main Content -->
+    <div class="container">
+        <div class="header">
+            <h1>Aneka Kripik Pisang KURNIA</h1>
+            <p>Kelola catatan kas keluar dan masuk dengan mudah</p>
+        </div>
+
+        <!-- Table -->
+        <div class="table-container">
+            <table>
+                <thead>
+                    <tr>
+                        <th>Tanggal</th>
+                        <th>Keterangan Barang</th>
+                        <th>Kas</th>
+                        <th>Harga Satuan</th>
+                        <th>Jumlah Barang</th>
+                        <th>Total</th>
+                        <th>Aksi</th>
+                    </tr>
+                </thead>
+                <tbody id="kasTableBody">
+                    <!-- Data Tabel Akan Dimasukkan Di Sini -->
+                </tbody>
+            </table>
+        </div>
+
+        <!-- Action Buttons -->
+        <div class="actions">
+            <button class="btn" id="downloadBtn" onclick="downloadCSV()">Unduh Dokumen</button>
+            <button class="btn add-product-btn" onclick="toggleForm()">Tambah Produk</button>
+        </div>
+
+        <!-- Add Product Form -->
+        <div class="form-container" id="formContainer">
+            <h3>Tambah Produk</h3>
+            <form id="productForm">
+                <label for="kasType">Kas</label>
+                <select id="kasType" name="kasType">
+                    <option value="masuk">Kas Masuk</option>
+                    <option value="keluar">Kas Keluar</option>
+                </select>
+                <label for="barang">Keterangan Barang</label>
+                <input type="text" id="barang" name="barang" required>
+                <label for="harga">Harga Satuan</label>
+                <input type="number" id="harga" name="harga" required>
+                <label for="jumlah">Jumlah Barang</label>
+                <input type="number" id="jumlah" name="jumlah" required>
+                <button type="button" class="btn" onclick="addProduct()">Tambah</button>
+            </form>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <p>&copy; 2024 Catatan Kas. Aneka Kripik Pisang KURNIA.</p>
+    </footer>
+
+    <script>
+        // Toggle Add Product Form
+        function toggleForm() {
+            const formContainer = document.getElementById('formContainer');
+            formContainer.style.display = formContainer.style.display === 'none' ? 'block' : 'none';
+        }
+
+        // Add Product to Table
+        function addProduct() {
+            const kasType = document.getElementById('kasType').value;
+            const barang = document.getElementById('barang').value;
+            const harga = document.getElementById('harga').value;
+            const jumlah = document.getElementById('jumlah').value;
+            const total = harga * jumlah;
+            
+            const tableBody = document.getElementById('kasTableBody');
+            const row = tableBody.insertRow();
+            row.innerHTML = `
+                <td>${new Date().toISOString().split('T')[0]}</td>
+                <td>${barang}</td>
+                <td>${kasType === 'masuk' ? 'Kas Masuk' : 'Kas Keluar'}</td>
+                <td>Rp${harga}</td>
+                <td>${jumlah}</td>
+                <td>Rp${total}</td>
+                <td><button class="btn" onclick="deleteRow(this)">Hapus</button></td>
+            `;
+
+            // Clear form and hide
+            document.getElementById('productForm').reset();
+            toggleForm();
+        }
+
+        // Delete Row from Table
+        function deleteRow(button) {
+            const row = button.parentNode.parentNode;
+            row.remove();
+        }
+
+        // Simulate Download Document as CSV
+        function downloadCSV() {
+            const table = document.querySelector('table');
+            const rows = Array.from(table.rows);
+            let csvContent = "";
+
+            // Loop through table rows and collect data
+            rows.forEach(row => {
+                const cols = Array.from(row.cells);
+                const rowContent = cols.map(cell => `"${cell.innerText}"`).join(",");
+                csvContent += rowContent + "\n";
+            });
+
+            // Create a Blob with the CSV data
+            const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' });
+
+            // Create an anchor element to trigger download
+            const link = document.createElement('a');
+            link.href = URL.createObjectURL(blob);
+            link.download = 'catatan_kas.csv';
+            link.click();
+        }
+    </script>
+</body>
+</html>
